@@ -1,0 +1,60 @@
+---
+title: "Week 3 Assignment"
+author: "Aidos Kanapyanov"
+date: "November 30, 2020"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Stock prices
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+library(plotly)
+library(quantmod)
+
+# Download some data
+gs = getSymbols(Symbols = c("^GSPC"), from = '2018-01-01')
+
+ds <- data.frame(Date = index(GSPC), GSPC[,6])
+
+fig <- plot_ly(ds, x = ~Date)
+fig <- fig %>% add_lines(y = ~GSPC.Adjusted, name = "S&P 500")
+fig <- fig %>% layout(
+    title = "Stock Prices",
+    xaxis = list(
+      rangeselector = list(
+        buttons = list(
+          list(
+            count = 3,
+            label = "3 mo",
+            step = "month",
+            stepmode = "backward"),
+          list(
+            count = 6,
+            label = "6 mo",
+            step = "month",
+            stepmode = "backward"),
+          list(
+            count = 1,
+            label = "1 yr",
+            step = "year",
+            stepmode = "backward"),
+          list(
+            count = 1,
+            label = "YTD",
+            step = "year",
+            stepmode = "todate"),
+          list(step = "all"))),
+
+      rangeslider = list(type = "date")),
+
+    yaxis = list(title = "Price"))
+
+fig
+```
+
+
+## Thanks
